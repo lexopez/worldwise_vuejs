@@ -5,11 +5,7 @@ import MessageNotif from "@/components/MessageNotif.vue";
 
 import { formatDate } from "@/utils/formatDate";
 
-const { getAllCities, deleteCity, data, currentCity } = useCities();
-
-onMounted(async () => {
-  await getAllCities();
-});
+const { deleteCity, data, currentCity } = useCities();
 </script>
 <template>
   <MessageNotif
