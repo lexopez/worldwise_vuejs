@@ -20,9 +20,14 @@ export function useCitiesProvider() {
         1,
       );
     },
+    async getCity(id) {
+      currentCity.value = data.value?.find((city) => city.id === id);
+      if (!currentCity.value)
+        currentCity.value = await execute(() => citiesService.getOne(id));
+    },
   };
 
-  provide(CITIES_SYMBOL, { data, error, isLoading, ...actions });
+  provide(CITIES_SYMBOL, { data, currentCity, error, isLoading, ...actions });
 
   return { ...actions, isLoading, error, data };
 }

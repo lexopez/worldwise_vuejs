@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, watch } from "vue";
+import { onMounted } from "vue";
 import { useCities } from "@/store/useCities";
 import MessageNotif from "@/components/MessageNotif.vue";
 
