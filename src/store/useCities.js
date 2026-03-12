@@ -1,14 +1,24 @@
 import { citiesService } from "@/api/citiesService";
 import { useApi } from "./useApi";
-import { inject, provide } from "vue";
+import { inject, provide, ref } from "vue";
 const CITIES_SYMBOL = Symbol("CitiesContext");
 
 export function useCitiesProvider() {
-  const { execute, isLoading, error, data } = useApi();
+  const data = ref(null);
+  const currentCity = ref(null);
+  const { execute, isLoading, error } = useApi();
 
   const actions = {
     async getAllCities() {
-      await execute(citiesService.getAll);
+      data.value = await execute(citiesService.getAll);
+    },
+    async deleteCity(id) {
+      await execute(() => citiesService.delete(id));
+
+      data.value.splice(
+        data.value.findIndex((city) => city.id === id),
+        1,
+      );
     },
   };
 
