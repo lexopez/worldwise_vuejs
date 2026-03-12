@@ -10,4 +10,13 @@ export const citiesService = {
       throw new Error("Failed to fetch cities");
     }
   },
+
+  async delete(id) {
+    try {
+      await client.delete(`/cities/${id}`);
+    } catch (err) {
+      console.error(err);
+      throw new Error("Failed to delete city");
+    }
+  },
 };

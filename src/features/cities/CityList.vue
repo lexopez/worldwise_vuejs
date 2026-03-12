@@ -1,11 +1,11 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, watch } from "vue";
 import { useCities } from "@/store/useCities";
 import MessageNotif from "@/components/MessageNotif.vue";
 
 import { formatDate } from "@/utils/formatDate";
 
-const { getAllCities, data } = useCities();
+const { getAllCities, deleteCity, data } = useCities();
 
 onMounted(async () => {
   await getAllCities();
@@ -18,11 +18,13 @@ onMounted(async () => {
   />
   <ul class="cityList">
     <li v-for="city in data">
-      <RouterLink to="cities/23423" class="cityItem cityItem--active">
+      <RouterLink :to="`cities/${city.id}`" class="cityItem cityItem--active">
         <span class="emoji">{{ city.emoji }}</span>
         <h3 class="name">{{ city.cityName }}</h3>
         <time class="date">{{ formatDate(city.date) }}</time>
-        <button class="deleteBtn">&times;</button>
+        <button class="deleteBtn" @click.stop.prevent="deleteCity(city.id)">
+          &times;
+        </button>
       </RouterLink>
     </li>
   </ul>
