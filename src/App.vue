@@ -1,6 +1,8 @@
 <script setup>
 import { RouterView } from "vue-router";
 import SpinnerFullPage from "./components/SpinnerFullPage.vue";
+import { useCitiesProvider } from "./store/useCities";
+useCitiesProvider();
 </script>
 
 <template>

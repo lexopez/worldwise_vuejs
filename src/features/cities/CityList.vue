@@ -1,52 +1,27 @@
 <script setup>
+import { onMounted } from "vue";
+import { useCities } from "@/store/useCities";
 import MessageNotif from "@/components/MessageNotif.vue";
 
-const { emoji, cityName, date } = {
-  cityName: "Lisbon",
-  country: "Portugal",
-  emoji: "🇵🇹",
-  date: "2027-10-31T15:59:59.138Z",
-  notes: "My favorite city so far!",
-  position: {
-    lat: 38.727881642324164,
-    lng: -9.140900099907554,
-  },
-  id: 73930385,
-};
+import { formatDate } from "@/utils/formatDate";
 
-const formatDate = (date) =>
-  new Intl.DateTimeFormat("en", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(date));
+const { getAllCities, data } = useCities();
+
+onMounted(async () => {
+  await getAllCities();
+});
 </script>
 <template>
   <MessageNotif
+    v-if="data?.length === 0"
     message="Add your first city by clicking on a city on the map"
   />
   <ul class="cityList">
-    <li>
+    <li v-for="city in data">
       <RouterLink to="cities/23423" class="cityItem cityItem--active">
-        <span class="emoji">{{ emoji }}</span>
-        <h3 class="name">{{ cityName }}</h3>
-        <time class="date">{{ formatDate(date) }}</time>
-        <button class="deleteBtn">&times;</button>
-      </RouterLink>
-    </li>
-    <li>
-      <RouterLink to="cities/23423" class="cityItem">
-        <span class="emoji">{{ emoji }}</span>
-        <h3 class="name">{{ cityName }}</h3>
-        <time class="date">{{ formatDate(date) }}</time>
-        <button class="deleteBtn">&times;</button>
-      </RouterLink>
-    </li>
-    <li>
-      <RouterLink to="cities/23423" class="cityItem">
-        <span class="emoji">{{ emoji }}</span>
-        <h3 class="name">{{ cityName }}</h3>
-        <time class="date">{{ formatDate(date) }}</time>
+        <span class="emoji">{{ city.emoji }}</span>
+        <h3 class="name">{{ city.cityName }}</h3>
+        <time class="date">{{ formatDate(city.date) }}</time>
         <button class="deleteBtn">&times;</button>
       </RouterLink>
     </li>
