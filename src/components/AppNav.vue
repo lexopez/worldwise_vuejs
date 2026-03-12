@@ -2,10 +2,10 @@
   <nav class="nav">
     <ul>
       <li>
-        <RouterLink to="cities">Cities</RouterLink>
+        <RouterLink to="/app/cities">Cities</RouterLink>
       </li>
       <li>
-        <RouterLink to="countries">Countries</RouterLink>
+        <RouterLink to="/app/countries">Countries</RouterLink>
       </li>
     </ul>
   </nav>
