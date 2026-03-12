@@ -17,7 +17,7 @@ onMounted(async () => {
     message="Add your first city by clicking on a city on the map"
   />
   <ul class="cityList">
-    <li v-for="city in data">
+    <li v-for="city in data" :key="city.id">
       <RouterLink
         :to="`cities/${city.id}`"
         :class="`cityItem ${currentCity?.id === city.id ? 'cityItem--active' : ''}`"
