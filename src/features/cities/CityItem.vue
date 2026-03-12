@@ -1,53 +1,44 @@
 <script setup>
 import BackButton from "@/components/BackButton.vue";
+import { useCities } from "@/store/useCities";
+import { onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { formatDate } from "@/utils/formatDate";
 
-const { emoji, cityName, date, notes } = {
-  cityName: "Lisbon",
-  country: "Portugal",
-  emoji: "🇵🇹",
-  date: "2027-10-31T15:59:59.138Z",
-  notes: "My favorite city so far!",
-  position: {
-    lat: 38.727881642324164,
-    lng: -9.140900099907554,
-  },
-  id: 73930385,
-};
+const { getCity, currentCity } = useCities();
+const id = useRoute().params.id;
 
-const formatDate = (date) =>
-  new Intl.DateTimeFormat("en", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(date));
+onMounted(async () => {
+  await getCity(id);
+});
 </script>
 <template>
-  <div class="city">
+  <div class="city" v-if="currentCity">
     <div class="row">
       <h6>City name</h6>
       <h3>
-        <span>{{ emoji }}</span> {{ cityName }}
+        <span>{{ currentCity.emoji }}</span> {{ currentCity.cityName }}
       </h3>
     </div>
 
     <div class="row">
-      <h6>You went to {{ cityName }} on</h6>
-      <p>{{ formatDate(date || null) }}</p>
+      <h6>You went to {{ currentCity.cityName }} on</h6>
+      <p>{{ formatDate(currentCity.date || null) }}</p>
     </div>
 
-    <div class="row" v-if="notes !== ''">
+    <div class="row" v-if="currentCity.notes !== ''">
       <h6>Your notes</h6>
-      <p>{{ notes }}</p>
+      <p>{{ currentCity.notes }}</p>
     </div>
 
     <div class="row">
       <h6>Lear more</h6>
       <a
-        :href="`https://en.wikipedia.org/wiki/${cityName}`"
+        :href="`https://en.wikipedia.org/wiki/${currentCity.cityName}`"
         target="_blank"
         rel="noreferrer"
       >
-        Check out {{ cityName }} on Wikipedia &rarr;</a
+        Check out {{ currentCity.cityName }} on Wikipedia &rarr;</a
       >
     </div>
     <div>

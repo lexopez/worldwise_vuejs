@@ -11,6 +11,16 @@ export const citiesService = {
     }
   },
 
+  async getOne(id) {
+    try {
+      const res = await client.get(`/cities/${id}`).then((res) => res.data);
+      return res;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Failed to fetch city");
+    }
+  },
+
   async delete(id) {
     try {
       await client.delete(`/cities/${id}`);
