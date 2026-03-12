@@ -15,7 +15,7 @@ const { deleteCity, data, currentCity } = useCities();
   <ul class="cityList">
     <li v-for="city in data" :key="city.id">
       <RouterLink
-        :to="`cities/${city.id}`"
+        :to="`cities/${city.id}?lat=${city.position.lat}&lng=${city.position.lng}`"
         :class="`cityItem ${currentCity?.id === city.id ? 'cityItem--active' : ''}`"
       >
         <span class="emoji">{{ city.emoji }}</span>

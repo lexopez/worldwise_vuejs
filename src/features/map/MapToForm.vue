@@ -1,26 +1,47 @@
 <script setup>
 import "leaflet/dist/leaflet.css";
-import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
+import { LMap, LTileLayer, LMarker, LPopup } from "@vue-leaflet/vue-leaflet";
 import L from "leaflet";
-import { ref } from "vue";
+import { ref, watch, watchEffect } from "vue";
 import SharedButton from "@/components/SharedButton.vue";
-const zoom = ref(2);
+import { useCities } from "@/store/useCities";
+import { useUrlPosition } from "@/composables/useUrlPosition";
+
+const { data } = useCities();
+const cities = ref(data);
+
+const [lat, lng] = useUrlPosition();
+const mapPosition = ref([40, 0]);
+
+watchEffect(
+  () =>
+    (mapPosition.value =
+      lat.value && lng.value ? [lat.value, lng.value] : mapPosition.value),
+);
+
+const zoom = ref(6);
 </script>
 
 <template>
   <div class="mapContainer">
     <SharedButton type="position">Use your position</SharedButton>
-    <l-map
-      class="map"
-      ref="map"
-      v-model:zoom="zoom"
-      :center="[47.41322, -1.219482]"
-    >
+    <l-map class="map" ref="map" v-model:zoom="zoom" :center="mapPosition">
       <l-tile-layer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         layer-type="base"
         name="OpenStreetMap"
       ></l-tile-layer>
+
+      <l-marker
+        v-for="city in cities"
+        :key="city.id"
+        :lat-lng="[city.position.lat, city.position.lng]"
+      >
+        <l-popup>
+          <span>{{ city.emoji }}</span>
+          <span>{{ city.cityName }}</span>
+        </l-popup>
+      </l-marker>
     </l-map>
   </div>
 </template>
