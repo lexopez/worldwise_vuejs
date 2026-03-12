@@ -1,37 +1,22 @@
 <script setup>
 import MessageNotif from "@/components/MessageNotif.vue";
+import { useCities } from "@/store/useCities";
 
-const country = {
-  cityName: "Lisbon",
-  country: "Portugal",
-  emoji: "🇵🇹",
-  date: "2027-10-31T15:59:59.138Z",
-  notes: "My favorite city so far!",
-  position: {
-    lat: 38.727881642324164,
-    lng: -9.140900099907554,
-  },
-  id: 73930385,
-};
+const { data } = useCities();
+
+const countries = data.value.reduce((arr, city) => {
+  if (!arr.map((el) => el.country).includes(city.country))
+    return [...arr, { country: city.country, emoji: city.emoji }];
+  else return arr;
+}, []);
 </script>
 <template>
   <MessageNotif
+    v-if="!data.length"
     message="Add your first city by clicking on a city on the map"
   />
   <ul class="countryList">
-    <li class="countryItem">
-      <span>{{ country.emoji }}</span>
-      <span>{{ country.country }}</span>
-    </li>
-    <li class="countryItem">
-      <span>{{ country.emoji }}</span>
-      <span>{{ country.country }}</span>
-    </li>
-    <li class="countryItem">
-      <span>{{ country.emoji }}</span>
-      <span>{{ country.country }}</span>
-    </li>
-    <li class="countryItem">
+    <li v-for="(country, index) in countries" :key="index" class="countryItem">
       <span>{{ country.emoji }}</span>
       <span>{{ country.country }}</span>
     </li>

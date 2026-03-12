@@ -22,8 +22,8 @@ export function useCitiesProvider() {
     },
     async getCity(id) {
       currentCity.value = data.value?.find((city) => city.id === id);
-      if (!currentCity.value)
-        currentCity.value = await execute(() => citiesService.getOne(id));
+      // if (!currentCity.value)
+      //   currentCity.value = await execute(() => citiesService.getOne(id));
     },
   };
 
