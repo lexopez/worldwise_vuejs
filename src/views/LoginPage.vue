@@ -1,20 +1,47 @@
 <script setup>
 import PageNav from "@/components/PageNav.vue";
 import SharedButton from "@/components/SharedButton.vue";
+import router from "@/router";
+import { useUser } from "@/store/useUser";
+import { ref, watch } from "vue";
+
+const { login, isAuthenticated } = useUser();
+
+const email = ref("jack@example.com");
+const password = ref("qwerty");
+
+function handleSubmit() {
+  if (!email.value || !password.value) {
+    return;
+  }
+  console.log(email.value, password.value);
+
+  login(email.value, password.value);
+}
+
+watch(
+  isAuthenticated,
+  () => {
+    if (isAuthenticated.value) {
+      router.push("/app");
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
   <main class="login">
     <PageNav />
 
-    <form class="form">
+    <form class="form" @submit.prevent="handleSubmit">
       <div class="row">
         <label for="email">Email addresss</label>
-        <input type="email" id="email" />
+        <input type="email" v-model="email" id="email" />
       </div>
       <div class="row">
         <label for="password">Password</label>
-        <input type="password" id="password" />
+        <input type="password" v-model="password" id="password" />
       </div>
       <div>
         <SharedButton type="primary">Login</SharedButton>

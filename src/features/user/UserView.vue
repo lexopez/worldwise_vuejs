@@ -1,8 +1,19 @@
+<script setup>
+import router from "@/router";
+import { useUser } from "@/store/useUser";
+
+const { user, logout } = useUser();
+
+function handleClick() {
+  logout();
+  router.push("/");
+}
+</script>
 <template>
   <div class="user">
-    <img src="" alt="" />
-    <span>Welcome, lex</span>
-    <button>Logout</button>
+    <img :src="user.avatar" :alt="user.name" />
+    <span>Welcome, {{ user.name }}</span>
+    <button @click="handleClick">Logout</button>
   </div>
 </template>
 

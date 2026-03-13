@@ -2,7 +2,11 @@
 import { RouterView } from "vue-router";
 import SpinnerFullPage from "./components/SpinnerFullPage.vue";
 import { useCitiesProvider } from "./store/useCities";
-import { onMounted } from "vue";
+import { onMounted, provide } from "vue";
+import { useUserProvider } from "./store/useUser";
+
+useUserProvider();
+
 const { getAllCities } = useCitiesProvider();
 onMounted(async () => {
   await getAllCities();

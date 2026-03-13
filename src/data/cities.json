@@ -25,27 +25,15 @@
       }
     },
     {
-      "id": "a446",
-      "cityName": "Dar Chaoui",
-      "country": "Morocco",
-      "emoji": "🇲🇦",
-      "date": "2026-03-13T08:51:27.253Z",
-      "notes": "great",
+      "id": "c525",
+      "cityName": "Zaragoza",
+      "country": "Spain",
+      "emoji": "🇪🇸",
+      "date": "2026-03-13T11:41:59.303Z",
+      "notes": "",
       "position": {
-        "lat": "35.62158189955968",
-        "lng": "-5.73486328125"
-      }
-    },
-    {
-      "id": "bb7a",
-      "cityName": "Portugal",
-      "country": "Portugal",
-      "emoji": "🇵🇹",
-      "date": "2026-03-13T08:57:29.874Z",
-      "notes": "great",
-      "position": {
-        "lat": "37.63163475580645",
-        "lng": "-25.55419921875"
+        "lat": "41.59079685105603",
+        "lng": "-0.8789062500000001"
       }
     }
   ],
