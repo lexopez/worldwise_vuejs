@@ -6,6 +6,7 @@ import { ref, watch, watchEffect } from "vue";
 import SharedButton from "@/components/SharedButton.vue";
 import { useCities } from "@/store/useCities";
 import { useUrlPosition } from "@/composables/useUrlPosition";
+import { useGeolocation } from "@/composables/useGeolocation";
 
 const { data } = useCities();
 const cities = ref(data);
@@ -13,10 +14,22 @@ const cities = ref(data);
 const [lat, lng] = useUrlPosition();
 const mapPosition = ref([40, 0]);
 
+const { isLoading, error, position, getPosition } = useGeolocation();
+
 watchEffect(
   () =>
     (mapPosition.value =
       lat.value && lng.value ? [lat.value, lng.value] : mapPosition.value),
+);
+
+watch(
+  () => position.value,
+  (position) => {
+    console.log(position);
+    if (position) {
+      mapPosition.value = [position.coords.latitude, position.coords.longitude];
+    }
+  },
 );
 
 const zoom = ref(6);
@@ -24,7 +37,13 @@ const zoom = ref(6);
 
 <template>
   <div class="mapContainer">
-    <SharedButton type="position">Use your position</SharedButton>
+    <SharedButton
+      v-if="!position"
+      type="position"
+      @click="getPosition"
+      :disabled="isLoading"
+      >{{ isLoading ? "Loading..." : "Use your position" }}</SharedButton
+    >
     <l-map class="map" ref="map" v-model:zoom="zoom" :center="mapPosition">
       <l-tile-layer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
