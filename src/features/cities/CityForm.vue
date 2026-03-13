@@ -2,40 +2,70 @@
 import BackButton from "@/components/BackButton.vue";
 import MessageNotif from "@/components/MessageNotif.vue";
 import SharedButton from "@/components/SharedButton.vue";
+import SpinnerPage from "@/components/SpinnerPage.vue";
+import { useUrlPosition } from "@/composables/useUrlPosition";
+import router from "@/router";
+import { useCities } from "@/store/useCities";
+import { convertToEmoji } from "@/utils/convertToEmoji";
+import { ref, watchEffect } from "vue";
 import Datepicker from "vue3-datepicker";
-const { emoji, cityName, date, notes } = {
-  cityName: "Lisbon",
-  country: "Portugal",
-  emoji: "🇵🇹",
-  date: "2027-10-31T15:59:59.138Z",
-  notes: "My favorite city so far!",
-  position: {
-    lat: 38.727881642324164,
-    lng: -9.140900099907554,
-  },
-  id: 73930385,
-};
+
+const { city, fetchCityFromlatlng, isLoading, error, createCity } = useCities();
+const [lat, lng] = useUrlPosition();
+
+const cityName = ref("");
+const date = ref(new Date());
+const notes = ref("");
+const emoji = ref("");
+const country = ref("");
+
+watchEffect(async () => {
+  await fetchCityFromlatlng(lat.value, lng.value);
+
+  cityName.value = city.value.city || city.value.locality || "";
+  emoji.value = convertToEmoji(city.value.countryCode);
+  country.value = city.value.countryName;
+});
+
+async function handleSubmit() {
+  if (!cityName || !date) return;
+
+  const newCity = {
+    cityName: cityName.value,
+    country: country.value,
+    emoji: emoji.value,
+    date: date.value,
+    notes: notes.value,
+    position: { lat: lat.value, lng: lng.value },
+  };
+
+  await createCity(newCity);
+  router.push("/app/cities");
+}
 </script>
 
 <template>
-  <!-- <MessageNotif
+  <MessageNotif
+    v-if="!lat && !lng"
     message="Add your first city by clicking on a city on the map"
-  /> -->
-  <form class="form">
+  />
+  <SpinnerPage v-if="isLoading" />
+  <MessageNotif :message="error" v-else-if="error" />
+  <form v-else class="form" @submit.prevent="handleSubmit">
     <div class="row">
       <label for="cityName">City name</label>
-      <input type="text" id="cityName" />
-      <span class="flag">{{ emoji }}</span>
+      <input type="text" id="cityName" v-model="cityName" />
+      <span class="flag">{{ city?.emoji }}</span>
     </div>
 
     <div class="row">
-      <label for="date">When did you go to {{ cityName }}</label>
-      <Datepicker />
+      <label for="date">When did you go to {{ city?.city }}</label>
+      <Datepicker id="date" v-model="date" />
     </div>
 
     <div class="row">
-      <label for="notes">Notes about your trip to {{ cityName }}</label>
-      <textarea id="notes" />
+      <label for="notes">Notes about your trip to {{ city?.city }}</label>
+      <textarea id="notes" v-model="notes" />
     </div>
 
     <div class="buttons">

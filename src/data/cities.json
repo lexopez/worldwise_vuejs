@@ -10,43 +10,44 @@
         "lat": 38.727881642324164,
         "lng": -9.140900099907554
       },
-      "id": 73930385
+      "id": "73930385"
     },
     {
-      "cityName": "Madrid",
+      "id": "b008",
+      "cityName": "Alcala de Guadaira",
       "country": "Spain",
       "emoji": "🇪🇸",
-      "date": "2027-07-15T08:22:53.976Z",
+      "date": "2026-03-13T08:51:14.943Z",
       "notes": "",
       "position": {
-        "lat": 40.46635901755316,
-        "lng": -3.7133789062500004
-      },
-      "id": 17806751
+        "lat": "37.28279464911048",
+        "lng": "-5.888671875"
+      }
     },
     {
-      "cityName": "Berlin",
-      "country": "Germany",
-      "emoji": "🇩🇪",
-      "date": "2027-02-12T09:24:11.863Z",
-      "notes": "Amazing 😃",
+      "id": "a446",
+      "cityName": "Dar Chaoui",
+      "country": "Morocco",
+      "emoji": "🇲🇦",
+      "date": "2026-03-13T08:51:27.253Z",
+      "notes": "great",
       "position": {
-        "lat": 52.53586782505711,
-        "lng": 13.376933665713324
-      },
-      "id": 98443197
+        "lat": "35.62158189955968",
+        "lng": "-5.73486328125"
+      }
     },
     {
-      "cityName": "Nijar",
-      "country": "Spain",
-      "emoji": "🇪🇸",
-      "date": "2023-04-03T07:47:59.202Z",
-      "notes": "",
+      "id": "bb7a",
+      "cityName": "Portugal",
+      "country": "Portugal",
+      "emoji": "🇵🇹",
+      "date": "2026-03-13T08:57:29.874Z",
+      "notes": "great",
       "position": {
-        "lat": "36.967508314568164",
-        "lng": "-2.13128394200588"
-      },
-      "id": 98443198
+        "lat": "37.63163475580645",
+        "lng": "-25.55419921875"
+      }
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

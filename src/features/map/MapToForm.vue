@@ -7,6 +7,9 @@ import SharedButton from "@/components/SharedButton.vue";
 import { useCities } from "@/store/useCities";
 import { useUrlPosition } from "@/composables/useUrlPosition";
 import { useGeolocation } from "@/composables/useGeolocation";
+import router from "@/router";
+
+const zoom = ref(6);
 
 const { data } = useCities();
 const cities = ref(data);
@@ -32,7 +35,11 @@ watch(
   },
 );
 
-const zoom = ref(6);
+const handleMapClick = (e) => {
+  const { lat, lng } = e.latlng;
+  router.push(`/app/form?lat=${lat}&lng=${lng}`);
+  // console.log(lat, lng);
+};
 </script>
 
 <template>
@@ -44,7 +51,13 @@ const zoom = ref(6);
       :disabled="isLoading"
       >{{ isLoading ? "Loading..." : "Use your position" }}</SharedButton
     >
-    <l-map class="map" ref="map" v-model:zoom="zoom" :center="mapPosition">
+    <l-map
+      class="map"
+      ref="map"
+      v-model:zoom="zoom"
+      :center="mapPosition"
+      @click="handleMapClick"
+    >
       <l-tile-layer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         layer-type="base"

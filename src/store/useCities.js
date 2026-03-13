@@ -6,6 +6,7 @@ const CITIES_SYMBOL = Symbol("CitiesContext");
 export function useCitiesProvider() {
   const data = ref(null);
   const currentCity = ref(null);
+  const city = ref(null);
   const { execute, isLoading, error } = useApi();
 
   const actions = {
@@ -22,12 +23,26 @@ export function useCitiesProvider() {
     },
     async getCity(id) {
       currentCity.value = data.value?.find((city) => city.id === id);
-      // if (!currentCity.value)
-      //   currentCity.value = await execute(() => citiesService.getOne(id));
+    },
+    async fetchCityFromlatlng(lat, lng) {
+      city.value = await execute(() => citiesService.fetchCity(lat, lng));
+      if (!city.value.countryCode)
+        error.value = "That doesn't seem to be a city. Click somewhere else 😉";
+    },
+    async createCity(newCity) {
+      const city = await execute(() => citiesService.create(newCity));
+      data.value.push(city);
     },
   };
 
-  provide(CITIES_SYMBOL, { data, currentCity, error, isLoading, ...actions });
+  provide(CITIES_SYMBOL, {
+    data,
+    currentCity,
+    city,
+    error,
+    isLoading,
+    ...actions,
+  });
 
   return { ...actions, isLoading, error, data };
 }
